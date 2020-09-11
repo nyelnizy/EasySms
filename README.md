@@ -9,9 +9,9 @@ This package also comes with a notification channel that integrates very well wi
 
 <ol style="font-weight: lighter; ">
     <li>Run <b>composer require sguy/easysms</b></li>
-    <li >Add <b><i>Sguy\EasySms\EasySmsServiceProvider::class,</i></b> to the providers array in app.php config file</li>
-    <li>Publish Config File by Running the following command <b><i>php artisan vendor:publish --tag=easysms</i></b></li>
-    <li>Run <b><i>composer dump-autoload</i></b></li>
+    <li >Add <b>Sguy\EasySms\EasySmsServiceProvider::class,</b> to the providers array in app.php config file</li>
+    <li>Publish Config File by Running the following command <b>php artisan vendor:publish --tag=easysms</b></li>
+    <li>Run <b>composer dump-autoload</b></li>
 </ol>
 
 <h3>Usage<h3>
