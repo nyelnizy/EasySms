@@ -51,8 +51,6 @@ class SmsController extends Controller
         $mess = $request->message;
         $phone = $request->phone;
 
-        //you can add a bunch or receipients/destinations iteratively (for or while loop or something similar)
-        $dest[0] = $phone;
         //sender id is optional, value from easysms.php config file will be used if not set.
         $sms->setSenderId("Yara Ghana");
 
@@ -63,12 +61,11 @@ class SmsController extends Controller
         $sms->setMessage($mess);
         
         //send message
-        $status = $sms->sendMessage();
+        $status = $sms->sendMessageTo($phone);
+
         //status will contain either "success", "invalid credentials", "insufficient balance" or "failed",
         if($status==="success"){
             return redirect()->back()->with('success','Message has been sent successfully');
-        }else{
-
         }
         //you can do more checks and act accordingly
     }
@@ -95,6 +92,7 @@ class SmsController extends Controller
 
         //you can add a bunch or receipients/destinations iteratively (for or while loop or something similar)
         $dest[0] = $phone;
+
         //sender id is optional, value from easysms.php config file will be used if not set.
         $sms->setSenderId("Yara Ghana");
 
@@ -102,7 +100,6 @@ class SmsController extends Controller
         $sms->setDestinations($dest);
 
         //Date can be obtained from request or any datasource
-
         $date = now()->addMinutes(10);
         $sms->schedule($date);
 
@@ -116,8 +113,6 @@ class SmsController extends Controller
         //status will contain either "success", "invalid credentials", "insufficient balance" or "failed",
         if($status==="success"){
             return redirect()->back()->with('success','Message has been sent successfully');
-        }else{
-
         }
         //you can do more checks and act accordingly
     }
