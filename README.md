@@ -54,9 +54,6 @@ class SmsController extends Controller
         //sender id is optional, value from easysms.php config file will be used if not set.
         $sms->setSenderId("Yara Ghana");
 
-        //set destinations/receipients which accepts an array of phone numbers to send message to
-        $sms->setDestinations($dest);
-
         //set message content
         $sms->setMessage($mess);
         
@@ -90,14 +87,8 @@ class SmsController extends Controller
         $mess = $request->message;
         $phone = $request->phone;
 
-        //you can add a bunch or receipients/destinations iteratively (for or while loop or something similar)
-        $dest[0] = $phone;
-
         //sender id is optional, value from easysms.php config file will be used if not set.
         $sms->setSenderId("Yara Ghana");
-
-        //set destinations/receipients which accepts an array of phone numbers to send message to
-        $sms->setDestinations($dest);
 
         //Date can be obtained from request or any datasource
         $date = now()->addMinutes(10);
@@ -108,7 +99,7 @@ class SmsController extends Controller
 
         //send message
         //message will be sent in 10 mins time
-        $status = $sms->sendMessage();
+        $status = $sms->sendMessageTo($phone);
 
         //status will contain either "success", "invalid credentials", "insufficient balance" or "failed",
         if($status==="success"){
@@ -120,7 +111,49 @@ class SmsController extends Controller
 
   ```
 
+  # Sending Message to multiple recipients
+  ```php
+  <?php
 
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Sguy\EasySms\Sms\EasySms;
+
+class SmsController extends Controller
+{
+    public function sendToMultiple(Request $request, EasySms $sms)
+    {
+        //get information from request or any source...
+        $mess = $request->message;
+        $phones = $request->phones;
+
+        //sender id is optional, value from easysms.php config file will be used if not set.
+        $sms->setSenderId("Yara Ghana");
+
+        //set destinations/receipients which accepts an array of phone numbers to send message to
+        $sms->setDestinations($phones);
+
+        //you can schedule too
+        // $date = now()->addMinutes(10);
+        // $sms->schedule($date);
+
+        //set message content
+        $sms->setMessage($mess);
+
+        //send message
+        //Now use sendMessage instead of sendMessage
+        $status = $sms->sendMessage();
+
+        //status will contain either "success", "invalid credentials", "insufficient balance" or "failed",
+        if($status==="success"){
+            return redirect()->back()->with('success','Message has been sent successfully');
+        }
+        //you can do more checks and act accordingly
+    }
+}
+
+  ```
   # Checking balance and charge per sms
   ```php
   <?php
